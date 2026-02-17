@@ -2,9 +2,9 @@ import SidebarView from './sidebar.view';
 import { useTheme } from '../ThemeContext/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
-const Sidebar = () => {
-  const navigate = useNavigate();
+const Sidebar = ({ onNavigate }) => {
   const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -16,6 +16,7 @@ const Sidebar = () => {
       onLogout={handleLogout}
       toggleTheme={toggleTheme}
       isDark={isDark}
+      onNavigate={onNavigate}
     />
   );
 };

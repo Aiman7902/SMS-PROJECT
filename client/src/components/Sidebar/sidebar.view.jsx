@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Dock, GraduationCap, User, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
 import './sidebar.css';
 
-const SidebarView = ({ onLogout, toggleTheme, isDark }) => {
+const navItems = [
+  { to: '/',         icon: Dock,          label: 'Dashboard' },
+  { to: '/students', icon: GraduationCap, label: 'Students' },
+  { to: '/teachers', icon: User,          label: 'Teachers' },
+];
+
+const SidebarView = ({ onLogout, toggleTheme, isDark, onNavigate }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <>
@@ -70,33 +77,20 @@ const SidebarView = ({ onLogout, toggleTheme, isDark }) => {
           </div>
 
           <ul className="fb-nav">
-            <li>
-              <NavLink
-                to="/"
-                className={({ isActive }) => `fb-nav-link${isActive ? ' fb-nav-link--active' : ''}`}
-              >
-                <Dock size={18} className="fb-nav-icon shrink-0" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/students"
-                className={({ isActive }) => `fb-nav-link${isActive ? ' fb-nav-link--active' : ''}`}
-              >
-                <GraduationCap size={18} className="fb-nav-icon shrink-0" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Students</span>
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/teachers"
-                className={({ isActive }) => `fb-nav-link${isActive ? ' fb-nav-link--active' : ''}`}
-              >
-                <User size={18} className="fb-nav-icon shrink-0" />
-                <span className="flex-1 ms-3 whitespace-nowrap">Teachers</span>
-              </NavLink>
-            </li>
+            {navItems.map(({ to, icon: Icon, label }) => (
+              <li key={to}>
+                <button
+                  className={`fb-nav-link${location.pathname === to ? ' fb-nav-link--active' : ''}`}
+                  onClick={() => {
+                    onNavigate(to);
+                    setMobileOpen(false);
+                  }}
+                >
+                  <Icon size={18} className="fb-nav-icon shrink-0" />
+                  <span className="flex-1 ms-3 whitespace-nowrap">{label}</span>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </aside>
