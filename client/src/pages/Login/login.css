@@ -1,0 +1,21 @@
+@reference "../../index.css";
+
+.login-container {
+    @apply h-screen flex justify-center items-center bg-slate-100;
+}
+
+.login-card {
+    @apply bg-white p-10 rounded-xl shadow-xl w-full max-w-md text-center border border-slate-200;
+}
+
+.login-form {
+    @apply flex flex-col gap-4 mt-6;
+}
+
+.login-input {
+    @apply p-3 border border-slate-300 rounded-lg text-base outline-none transition-all focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.login-button {
+    @apply p-3 bg-slate-800 text-white rounded-lg cursor-pointer text-base font-semibold transition-colors hover:bg-slate-700 active:scale-[0.98];
+}

@@ -1,0 +1,204 @@
+@reference "../../index.css";
+
+/* ══════════════════════
+   NAVBAR
+   ══════════════════════ */
+.fb-navbar {
+    @apply fixed top-0 z-50 w-full border-b transition-colors duration-300;
+    background-color: var(--bg-surface);
+    border-color: var(--border-color);
+}
+
+.fb-navbar-inner {
+    @apply flex items-center justify-between px-3 py-3 lg:px-5;
+}
+
+.fb-navbar-left {
+    @apply flex items-center gap-2;
+}
+
+.fb-navbar-hamburger {
+    @apply sm:hidden p-2 rounded-lg transition-colors duration-200;
+    color: var(--text-muted);
+}
+
+.fb-navbar-hamburger:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.fb-navbar-brand {
+    @apply flex items-center ms-2;
+}
+
+.fb-navbar-brand-name {
+    @apply self-center text-lg font-semibold whitespace-nowrap;
+    color: var(--text-primary);
+}
+
+.fb-navbar-right {
+    @apply flex items-center gap-3;
+}
+
+/* Theme toggle */
+.fb-theme-btn {
+    @apply p-2 rounded-lg border transition-all duration-200;
+    color: var(--text-muted);
+    border-color: var(--border-color);
+    background: transparent;
+}
+
+.fb-theme-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* User avatar */
+.fb-user-wrapper {
+    @apply relative;
+}
+
+.fb-user-avatar-btn {
+    @apply flex rounded-full focus:ring-2 focus:ring-blue-300 transition-transform duration-200;
+}
+
+.fb-user-avatar-btn:hover {
+    @apply scale-105;
+}
+
+/* Dropdown */
+.fb-dropdown {
+    @apply absolute right-0 mt-2 z-50 w-44 rounded-xl shadow-2xl overflow-hidden;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    animation: dropIn 0.15s ease-out;
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.fb-dropdown-header {
+    @apply px-4 py-3;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fb-dropdown-name {
+    @apply text-sm font-medium;
+    color: var(--text-primary);
+}
+
+.fb-dropdown-email {
+    @apply text-sm truncate;
+    color: var(--text-secondary);
+}
+
+.fb-dropdown-menu {
+    @apply p-2;
+}
+
+.fb-dropdown-item {
+    @apply inline-flex items-center gap-2 w-full px-2 py-2 text-sm rounded-lg transition-colors duration-150;
+    color: var(--text-secondary);
+    background: transparent;
+}
+
+.fb-dropdown-item:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.fb-dropdown-signout:hover {
+    color: var(--danger-text);
+    background-color: var(--danger-soft);
+}
+
+/* ══════════════════════
+   SIDEBAR
+   ══════════════════════ */
+.fb-sidebar {
+    @apply fixed top-0 left-0 z-40 w-64 h-full transition-transform duration-300 -translate-x-full sm:translate-x-0;
+}
+
+.fb-sidebar--open {
+    @apply translate-x-0;
+}
+
+.fb-sidebar-inner {
+    @apply h-full px-3 py-4 overflow-y-auto border-e transition-colors duration-300;
+    background-color: var(--bg-surface);
+    border-color: var(--border-color);
+}
+
+.fb-sidebar-brand {
+    @apply flex items-center ps-2.5 mb-5;
+}
+
+.fb-sidebar-brand-name {
+    @apply self-center text-lg font-semibold whitespace-nowrap;
+    color: var(--text-primary);
+}
+
+/* Nav links */
+.fb-nav {
+    @apply space-y-2 font-medium;
+}
+
+.fb-nav-link {
+    @apply flex items-center px-2 py-1.5 rounded-lg transition-all duration-200 text-sm;
+    color: var(--text-secondary);
+}
+
+.fb-nav-link:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.fb-nav-link:hover .fb-nav-icon {
+    color: var(--accent);
+}
+
+.fb-nav-link--active {
+    color: var(--accent);
+    background-color: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent-border);
+}
+
+.fb-nav-link--active .fb-nav-icon {
+    color: var(--accent);
+}
+
+.fb-nav-link--active::after {
+    content: '';
+    @apply w-1.5 h-1.5 rounded-full ml-auto shrink-0;
+    background-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.fb-nav-icon {
+    @apply transition-colors duration-200;
+    color: var(--text-muted);
+}
+
+/* Badges */
+.fb-badge-pro {
+    @apply text-xs font-medium px-1.5 py-0.5 rounded-sm ms-auto;
+    background-color: var(--bg-hover);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.fb-badge-count {
+    @apply inline-flex items-center justify-center w-5 h-5 ms-2 text-xs font-semibold rounded-full;
+    background-color: var(--danger-soft);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+}
+
+/* Mobile overlay */
+.fb-overlay {
+    @apply fixed inset-0 z-30;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}

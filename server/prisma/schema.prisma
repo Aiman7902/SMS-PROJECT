@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model users {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(255)
+  name      String   @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      String?  @default("admin") @db.VarChar(50)
+
+  // Add these to match your other models
+  createdOn   DateTime @default(now()) @db.Timestamp(6)
+  updatedOn   DateTime @updatedAt @db.Timestamp(6)
+  lockCount   Int      @default(0)
+
+  // Self-Relations (Optional because the first admin has no creator)
+  createdById Int?
+  updatedById Int?
+  createdBy   users?   @relation("UserCreatedBy", fields: [createdById], references: [id])
+  updatedBy   users?   @relation("UserUpdatedBy", fields: [updatedById], references: [id])
+
+  // Reverse relations
+  usersCreated    users[]     @relation("UserCreatedBy")
+  usersUpdated    users[]     @relation("UserUpdatedBy")
+  studentsCreated student[]   @relation("StudentCreatedBy")
+  studentsUpdated student[]   @relation("StudentUpdatedBy")
+  classesCreated  classroom[] @relation("ClassCreatedBy")
+  classesUpdated  classroom[] @relation("ClassUpdatedBy")
+
+  @@map("users")
+}
+
+model classroom {
+  id        Int       @id @default(autoincrement())
+  className String    @db.VarChar(100)
+  students  student[]
+
+  // 5 Mandatory Audit/Lock Fields
+  createdOn   DateTime @default(now()) @db.Timestamp(6)
+  updatedOn   DateTime @updatedAt @db.Timestamp(6)
+  lockCount   Int      @default(0)
+  
+  createdById Int
+  createdBy   users    @relation("ClassCreatedBy", fields: [createdById], references: [id])
+  updatedById Int
+  updatedBy   users    @relation("ClassUpdatedBy", fields: [updatedById], references: [id])
+
+  @@map("classes")
+}
+
+model student {
+  id        Int    @id @default(autoincrement())
+  studentId String @unique @db.VarChar(50)
+  name      String @db.VarChar(255)
+  email     String? @db.VarChar(255)
+  grade     String @db.VarChar(50)
+  status    String @default("active") @db.VarChar(20)
+
+  // 5 Mandatory Audit/Lock Fields
+  createdOn   DateTime @default(now()) @db.Timestamp(6)
+  updatedOn   DateTime @updatedAt @db.Timestamp(6)
+  lockCount   Int      @default(0)
+
+  createdById Int
+  createdBy   users    @relation("StudentCreatedBy", fields: [createdById], references: [id])
+  updatedById Int
+  updatedBy   users    @relation("StudentUpdatedBy", fields: [updatedById], references: [id])
+
+  // Foreign Key for Class
+  classId     Int
+  class       classroom @relation(fields: [classId], references: [id])
+
+  @@map("students")
+}
