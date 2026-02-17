@@ -36,8 +36,13 @@
 }
 
 /* ── Container Card ── */
+/* ── Table Responsive ── */
+.table-responsive {
+    @apply overflow-x-auto;
+}
+
 .content-container {
-    @apply rounded-2xl overflow-hidden;
+    @apply rounded-2xl;
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
 }
@@ -139,4 +144,56 @@
 .btn-delete:hover {
     opacity: 0.75;
     text-decoration: underline;
+}
+
+/* ── Action Dropdown ── */
+.action-dropdown-wrapper {
+    @apply relative inline-block;
+}
+
+.action-trigger-btn {
+    @apply p-2 rounded-lg transition-all duration-200;
+    color: var(--text-muted);
+    background: transparent;
+}
+
+.action-trigger-btn:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.action-dropdown {
+    @apply absolute left-0 z-50 w-36 rounded-xl shadow-2xl overflow-hidden;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    animation: dropIn 0.15s ease-out;
+}
+
+.action-dropdown ul {
+    @apply p-2;
+}
+
+.action-dropdown-item {
+    @apply inline-flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg transition-colors duration-150;
+    color: var(--text-secondary);
+    background: transparent;
+}
+
+.action-dropdown-item:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.action-dropdown-item--danger {
+    color: var(--danger-text);
+}
+
+.action-dropdown-item--danger:hover {
+    background-color: var(--danger-soft);
+    color: var(--danger-text);
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
