@@ -1,29 +1,37 @@
-export const apiClient = async (url, options = {}) => {
-  const defaultOptions = {
+import { errorLogger } from './ErrorLogger';
+
+export const apiClient = async (endpoint, options = {}) => {
+  const token = localStorage.getItem('token');
+  
+  const config = {
+    method: options.method || 'GET',
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options.headers,
     },
-    ...options,
+    ...(options.body && { body: JSON.stringify(options.body) }),
   };
 
-  const response = await fetch(url, defaultOptions);
-  
-  // 1. Get the raw text first
-  const contentType = response.headers.get("content-type");
-  let data;
-  
-  if (contentType && contentType.includes("application/json")) {
-    const text = await response.text();
-    data = text ? JSON.parse(text) : {};
-  } else {
-    data = {};
+  try {
+    const response = await fetch(endpoint, config);
+    
+    // Try to parse JSON response (even if error)
+    const data = await response.json().catch(() => ({}));
+    
+    if (!response.ok) {
+      const error = new Error(data.message || `HTTP ${response.status}: ${response.statusText}`);
+      error.response = {
+        status: response.status,
+        data: data
+      };
+      throw error;
+    }
+    
+    return data;
+  } catch (error) {
+    // Log API errors automatically
+    await errorLogger.logApiError(error, endpoint, config.method);
+    throw error; // Re-throw so component can handle it
   }
-
-  // 2. Handle Errors
-  if (!response.ok) {
-    // This will now show the ACTUAL error from Prisma (like "Record not found")
-    throw new Error(data.error || data.message || `Error: ${response.status}`);
-  }
-
-  return data;
 };

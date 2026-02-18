@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AddStudentView from './add-student.view';
+import Toast from '../../Toast/Toast';
 import { API_ENDPOINTS } from '../../../utils/constants';
 import { apiClient } from '../../../utils/api-client';
 import './add-student.css';
@@ -13,6 +14,7 @@ const AddStudent = ({ onRefresh, onClose }) => {
     });
 
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null); // { message, type }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,33 +29,45 @@ const AddStudent = ({ onRefresh, onClose }) => {
         setLoading(true); 
 
         try {
-            // Promise.all waits for BOTH the API and the timer to finish
             await Promise.all([
                 apiClient(API_ENDPOINTS.STUDENTS.CREATE, {
                     method: 'POST',
-                    body: JSON.stringify(formData)
+                    body: formData  
                 }),
-                new Promise(resolve => setTimeout(resolve, 1500)) // Force 1.5s delay
+                new Promise(resolve => setTimeout(resolve, 1500))
             ]);
 
-            onRefresh();
-            onClose();
+            setToast({ message: 'Student created successfully!', type: 'success' });
+            setTimeout(() => {
+                onRefresh();
+                onClose();
+            }, 1000); // Give user time to see success toast
         } catch (error) {
-            alert("Failed to save student: " + error.message);
+            const message = error.response?.data?.message || 'Failed to save student';
+            setToast({ message, type: 'error' });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <AddStudentView 
-            formData={formData} 
-            onChange={handleChange} 
-            onSubmit={handleSubmit} 
-            loading={loading}
-            onClose={onClose} 
-        />
-  );
+        <>
+            <AddStudentView 
+                formData={formData} 
+                onChange={handleChange} 
+                onSubmit={handleSubmit} 
+                loading={loading}
+                onClose={onClose} 
+            />
+            {toast && (
+                <Toast 
+                    message={toast.message} 
+                    type={toast.type} 
+                    onClose={() => setToast(null)} 
+                />
+            )}
+        </>
+    );
 };
 
 export default AddStudent;

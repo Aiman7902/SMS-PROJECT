@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
+import { errorHandler } from './middleware/error-handler.middleware.js';
 
 // Import Modular Routes
 import authRoutes from './routes/auth.routes.js';
 import studentRoutes from './routes/student.routes.js'; 
+import errorRoutes from './routes/error.routes.js';
 
 const app = express();
 
@@ -15,6 +17,9 @@ app.use(express.json());
 // This matches your Frontend constants: http://localhost:5000/api/students
 app.use('/api/auth', authRoutes);
 app.use('/api/students', studentRoutes); 
+app.use('/api', errorRoutes);
+app.use(errorHandler);
+
 
 const PORT = 5000;
 app.listen(PORT, () => {

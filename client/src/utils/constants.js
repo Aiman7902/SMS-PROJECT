@@ -8,7 +8,7 @@ export const API_ENDPOINTS = {
   },
   STUDENTS: {
         LIST: `${BASE_URL}/students`,      // GET
-        CREATE: `${BASE_URL}/students`,    // POST (Same URL, different method)
+        CREATE: `${BASE_URL}/students`,    // POST 
         DELETE: (id) => `${BASE_URL}/students/${id}`, // DELETE
         DETAILS: (id) => `${BASE_URL}/students/${id}`, // GET
   },
@@ -17,6 +17,10 @@ export const API_ENDPOINTS = {
   },
   CLASSROOMS: {
     LIST: `${BASE_URL}/classrooms`,
+  },
+
+  ERRORS: {
+    LOG: `${BASE_URL}/errors`
   }
 };
 

@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Sidebar from '../Sidebar/sidebar';
 import { ThemeProvider } from '../ThemeContext/ThemeContext';
 import PageLoader from '../PageLoader/PageLoader';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import './layout.css';
 
 const LayoutView = () => {
@@ -10,25 +11,28 @@ const LayoutView = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Call this when a nav link is clicked
   const handleNavigate = (to) => {
-    if (location.pathname === to) return; // already on this page
+    if (location.pathname === to) return;
     setIsLoading(true);
     setTimeout(() => {
       navigate(to);
       setIsLoading(false);
-    }, 600); // show spinner for 600ms
+    }, 600);
   };
 
   return (
     <ThemeProvider>
-      <div className="layout-container">
-        <Sidebar onNavigate={handleNavigate} />
-        <main className="main-content">
-          {isLoading && <PageLoader />}
-          <Outlet />
-        </main>
-      </div>
+      <ErrorBoundary componentName="Layout">
+        <div className="layout-container">
+          <Sidebar onNavigate={handleNavigate} />
+          <main className="main-content">
+            {isLoading && <PageLoader />}
+            <ErrorBoundary componentName="Page Content">
+              <Outlet />
+            </ErrorBoundary>
+          </main>
+        </div>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };

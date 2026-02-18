@@ -1,0 +1,47 @@
+@reference "../../index.css";
+
+.error-boundary-container {
+    @apply fixed inset-0 z-[9999] flex items-center justify-center p-4;
+    background-color: var(--bg-base);
+}
+
+.error-boundary-card {
+    @apply max-w-md w-full rounded-2xl p-8 text-center;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+}
+
+.error-icon {
+    @apply text-6xl mb-4;
+}
+
+.error-title {
+    @apply text-2xl font-bold mb-2;
+    color: var(--text-primary);
+}
+
+.error-message {
+    @apply mb-6 text-sm;
+    color: var(--text-secondary);
+}
+
+.error-refresh-btn {
+    @apply px-6 py-2.5 rounded-xl font-semibold transition-all duration-200;
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
+.error-refresh-btn:hover {
+    opacity: 0.9;
+}
+
+.error-details {
+    @apply mt-6 text-left p-4 rounded-lg text-xs;
+    background-color: var(--bg-base);
+    border: 1px solid var(--border-color);
+}
+
+.error-details pre {
+    @apply overflow-auto;
+    color: var(--text-secondary);
+}

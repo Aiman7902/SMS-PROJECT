@@ -77,3 +77,19 @@ model student {
 
   @@map("students")
 }
+
+model ErrorLog {
+  id             Int      @id @default(autoincrement())
+  message        String
+  stack          String?  @db.Text
+  context        String
+  timestamp      DateTime @default(now())
+  userAgent      String?
+  url            String?
+  endpoint       String?
+  method         String?
+  statusCode     Int?
+  additionalData Json?
+  
+  @@map("error_logs")
+}
