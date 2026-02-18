@@ -1,12 +1,19 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import './Toast.css';
 
 const Toast = ({ message, type = 'error', onClose }) => {
+  const [isClosing, setIsClosing] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(onClose, 4000); // Auto-dismiss after 4s
+    const timer = setTimeout(() => handleClose(), 2000);
     return () => clearTimeout(timer);
-  }, [onClose]);
+  }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(onClose, 300); // Wait for animation to finish
+  };
 
   const icons = {
     success: <CheckCircle size={20} />,
@@ -15,11 +22,23 @@ const Toast = ({ message, type = 'error', onClose }) => {
   };
 
   return (
-    <div className={`toast toast--${type}`}>
-      <div className="toast-icon">{icons[type]}</div>
-      <p className="toast-message">{message}</p>
-      <button className="toast-close" onClick={onClose}>
-        <X size={16} />
+    <div 
+      className={`toast toast--${type} ${isClosing ? 'toast--closing' : ''}`} 
+      role="alert"
+    >
+      <div className={`toast-icon-wrapper toast-icon-wrapper--${type}`}>
+        {icons[type]}
+        <span className="sr-only">{type} icon</span>
+      </div>
+      <div className="toast-message">{message}</div>
+      <button 
+        type="button"
+        className="toast-close-btn" 
+        onClick={handleClose}
+        aria-label="Close"
+      >
+        <span className="sr-only">Close</span>
+        <X size={20} />
       </button>
     </div>
   );
