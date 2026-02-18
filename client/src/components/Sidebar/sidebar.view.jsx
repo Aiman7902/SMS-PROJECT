@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Dock, GraduationCap, User, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
+import { Dock, GraduationCap, User, BookOpen, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
 import './sidebar.css';
 
 const navItems = [
   { to: '/',         icon: Dock,          label: 'Dashboard' },
   { to: '/students', icon: GraduationCap, label: 'Students' },
   { to: '/teachers', icon: User,          label: 'Teachers' },
+  { to: '/class', icon: BookOpen,          label: 'Class' },
 ];
 
 const SidebarView = ({ onLogout, toggleTheme, isDark, onNavigate }) => {

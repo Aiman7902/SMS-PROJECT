@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { API_ENDPOINTS } from '../../utils/constants';
 import { apiClient } from '../../utils/api-client';
 import './student.css';
 import StudentView from './student.view';
-import AddStudent from './AddStudent/add-student'; 
+import AddStudent from './AddStudent/add-student';
+import EditStudent from './EditStudent/edit-student';
 import DeleteStudent from './DeleteStudent/delete-student';
-
 
 const Student = () => {
   const [students, setStudents] = useState([]);
@@ -14,8 +14,8 @@ const Student = () => {
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
   
-  // 1. State to control the Add Student Modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const fetchStudents = () => {
@@ -44,10 +44,15 @@ const Student = () => {
     setFilteredStudents(results);
   }, [searchTerm, students]);
 
+  const handleEditClick = (student) => {
+    setSelectedStudent(student);
+    setIsEditModalOpen(true);
+  };
+
   const handleDeleteClick = (student) => {
-        setSelectedStudent(student);
-        setIsDeleteModalOpen(true);
-    };
+    setSelectedStudent(student);
+    setIsDeleteModalOpen(true);
+  };
 
   return (
     <>
@@ -56,24 +61,32 @@ const Student = () => {
         loading={loading} 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        onAddClick={() => setIsModalOpen(true)} 
+        onAddClick={() => setIsAddModalOpen(true)}
+        onEditClick={handleEditClick}
         onDeleteClick={handleDeleteClick}   
       />
 
-      {/* 3. Render the Modal if state is true */}
-      {isModalOpen && (
+      {isAddModalOpen && (
         <AddStudent 
-          onClose={() => setIsModalOpen(false)} 
+          onClose={() => setIsAddModalOpen(false)} 
           onRefresh={fetchStudents} 
         />
       )}
-      {/* Delete Student Modal */}
+
+      {isEditModalOpen && (
+        <EditStudent
+          student={selectedStudent}
+          onClose={() => setIsEditModalOpen(false)}
+          onRefresh={fetchStudents}
+        />
+      )}
+
       {isDeleteModalOpen && (
-          <DeleteStudent 
-              student={selectedStudent}
-              onClose={() => setIsDeleteModalOpen(false)}
-              onRefresh={fetchStudents}
-          />
+        <DeleteStudent 
+          student={selectedStudent}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onRefresh={fetchStudents}
+        />
       )}
     </>
   );

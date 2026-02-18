@@ -24,6 +24,22 @@ export const createStudent = async (studentData) => {
   });
 };
 
+export const updateStudent = async (id, studentData) => {
+  const { name, studentId, grade, status } = studentData;
+  
+  return await prisma.student.update({
+    where: { id },
+    data: {
+      name,
+      studentId,
+      grade,
+      status: status.toLowerCase(),
+      updatedById: 1,
+      lockCount: { increment: 1 }
+    }
+  });
+};
+
 export const deleteStudent = async (id) => {
   return await prisma.student.delete({
     where: { id }

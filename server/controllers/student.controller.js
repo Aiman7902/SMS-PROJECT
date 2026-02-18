@@ -14,6 +14,14 @@ export const createStudent = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, data: newStudent });
 });
 
+// UPDATE STUDENT
+export const updateStudent = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const studentData = req.body;
+  const updatedStudent = await studentService.updateStudent(parseInt(id), studentData);
+  res.json({ success: true, data: updatedStudent });
+});
+
 // DELETE STUDENT
 export const deleteStudent = asyncHandler(async (req, res) => {
   const { id } = req.params;
