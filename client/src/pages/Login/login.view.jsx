@@ -1,10 +1,8 @@
-import React from 'react';
-import useLoginLogic from './login.jsx'; // Import the logic hook
+import useLoginLogic from './login.jsx';
 import './login.css';
 
 const LoginView = () => {
-    // Get everything we need from the logic file
-    const { setEmail, setPassword, error, handleLogin } = useLoginLogic();
+    const { setEmail, setPassword, error, loading, handleLogin } = useLoginLogic();
 
     return (
         <div className="login-container">
@@ -12,7 +10,7 @@ const LoginView = () => {
                 <h2>SMS Admin Login</h2>
                 <p>Please enter your credentials</p>
                 
-                {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
+                {error && <p className="login-error">{error}</p>}
                 
                 <form className="login-form" onSubmit={handleLogin}>
                     <input 
@@ -20,6 +18,7 @@ const LoginView = () => {
                         placeholder="Email Address" 
                         className="login-input" 
                         onChange={(e) => setEmail(e.target.value)}
+                        disabled={loading}
                         required 
                     />
                     <input 
@@ -27,10 +26,20 @@ const LoginView = () => {
                         placeholder="Password" 
                         className="login-input" 
                         onChange={(e) => setPassword(e.target.value)}
+                        disabled={loading}
                         required 
                     />
-                    <button type="submit" className="login-button">
-                        Login
+                    <button 
+                        type="submit" 
+                        className="login-button" 
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <span className="login-button-loading">
+                                <span className="spinner"></span>
+                                Logging in...
+                            </span>
+                        ) : 'Login'}
                     </button>
                 </form>
             </div>

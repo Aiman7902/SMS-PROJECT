@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Dock, GraduationCap, User, BookOpen, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
+import { Dock, GraduationCap, User, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
 import './sidebar.css';
 
 const navItems = [
   { to: '/',         icon: Dock,          label: 'Dashboard' },
   { to: '/students', icon: GraduationCap, label: 'Students' },
   { to: '/teachers', icon: User,          label: 'Teachers' },
-  { to: '/class', icon: BookOpen,          label: 'Class' },
 ];
 
-const SidebarView = ({ onLogout, toggleTheme, isDark, onNavigate }) => {
+const SidebarView = ({ onLogout, isLoggingOut, toggleTheme, isDark, onNavigate }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
@@ -58,8 +57,21 @@ const SidebarView = ({ onLogout, toggleTheme, isDark, onNavigate }) => {
                   </div>
                   <ul className="fb-dropdown-menu">
                     <li>
-                      <button className="fb-dropdown-item fb-dropdown-signout" onClick={onLogout}>
-                        <LogOut size={14} /> Sign out
+                      <button 
+                        className="fb-dropdown-item fb-dropdown-signout" 
+                        onClick={onLogout}
+                        disabled={isLoggingOut}
+                      >
+                        {isLoggingOut ? (
+                          <>
+                            <span className="logout-spinner"></span>
+                            Logging out...
+                          </>
+                        ) : (
+                          <>
+                            <LogOut size={14} /> Sign out
+                          </>
+                        )}
                       </button>
                     </li>
                   </ul>
